@@ -1,0 +1,46 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: redis_cache
+    restart: always
+    environment:
+      REDIS_PASSWORD: MinhaSenhaSuperSegura123
+    ports:
+      - "6379:6379"
+    command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\" --appendonly yes"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - networkevaluation
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  evaluation-service:
+    build: .
+    container_name: evaluation_service
+    #restart: always
+    environment:
+      PORT: 8004
+      REDIS_URL: "redis://:MinhaSenhaSuperSegura123@redis:6379"
+      FLAG_SERVICE_URL: "http://localhost:8002"
+      TARGETING_SERVICE_URL: "http://localhost:8003"
+      SERVICE_API_KEY: "tm_key_5dc5cba84b4c830b0b0a4dfb425734ff5bef2676b80df83152be26bbeeec6d25"
+      AWS_SQS_URL: 
+      AWS_REGION: "us-east-2"
+    ports:
+      - "8004:8004"
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - networkevaluation
+
+volumes:
+  redis_data:
+
+networks:
+  networkevaluation:
