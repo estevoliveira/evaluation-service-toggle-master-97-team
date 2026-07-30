@@ -29,7 +29,7 @@ services:
       FLAG_SERVICE_URL: "http://localhost:8002"
       TARGETING_SERVICE_URL: "http://localhost:8003"
       SERVICE_API_KEY: "tm_key_5dc5cba84b4c830b0b0a4dfb425734ff5bef2676b80df83152be26bbeeec6d25"
-      AWS_SQS_URL: "[https://sqs.us-east-2.amazonaws.com/992382782782/SQSqueueEvaluation-service](https://sqs.us-east-2.amazonaws.com/992382782782/SQSqueueEvaluation-service)" 
+      AWS_SQS_URL: "" 
       AWS_REGION: "us-east-2"
     ports:
       - "8004:8004"
